@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { data } from "./Data.js";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./MainPost.css";
 
 function MainPost() {
-	const [stateData, setStateData] = useState(data);
+	const [stateData, setStateData] = useState([]);
 	const [selectedPost, setSelectedPost] = useState(null);
 
 	const handleDelete = (index) => {
@@ -21,6 +20,17 @@ function MainPost() {
 	const cancelDelete = () => {
 		setSelectedPost(null);
 	};
+
+	useEffect(() => {
+		fetch("https://jsonplaceholder.typicode.com/posts")
+			.then((response) => response.json())
+			.then((data) => {
+				setStateData(data.slice(0, 10));
+			})
+			.catch((error) => {
+				console.error("Error fetching data:", error);
+			});
+	}, []);
 
 	return (
 		<>

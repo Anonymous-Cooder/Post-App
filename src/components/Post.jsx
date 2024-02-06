@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { data } from "./Data.js";
+// import { data } from "./Data.js";
 
 import "./PostPage.css";
 
 const PostPage = () => {
-	const { id } = useParams();
-	const post = data.find((post) => post.id === parseInt(id));
+	let { id } = useParams();
 
-	if (!post) {
-		return <div className="post-not-found">Post not found</div>;
-	}
+	const [post, setPost] = useState([]);
+
+	fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+		.then((response) => response.json())
+		.then((data) => {
+			setPost(data);
+		})
+		.catch((error) => {
+			console.error("Error fetching data:", error);
+			return <div className="post-not-found">Post not found</div>;
+		});
 
 	return (
 		<div className="post-page">
