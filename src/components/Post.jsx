@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 // import { data } from "./Data.js";
-
+import axios from "axios";
 import "./PostPage.css";
 
 const PostPage = () => {
@@ -9,11 +9,12 @@ const PostPage = () => {
 
 	const [post, setPost] = useState([]);
 
-	fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
-		.then((response) => response.json())
-		.then((data) => {
-			setPost(data);
+	axios
+		.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+		.then((response) => {
+			setPost(response.data);
 		})
+
 		.catch((error) => {
 			console.error("Error fetching data:", error);
 			return <div className="post-not-found">Post not found</div>;

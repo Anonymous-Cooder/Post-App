@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./MainPost.css";
 
 function MainPost() {
@@ -22,10 +23,10 @@ function MainPost() {
 	};
 
 	useEffect(() => {
-		fetch("https://jsonplaceholder.typicode.com/posts")
-			.then((response) => response.json())
-			.then((data) => {
-				setStateData(data.slice(0, 10));
+		axios
+			.get("https://jsonplaceholder.typicode.com/posts")
+			.then((response) => {
+				setStateData(response.data.slice(0, 10));
 			})
 			.catch((error) => {
 				console.error("Error fetching data:", error);
