@@ -12,10 +12,25 @@ function MainPost() {
 	};
 
 	const confirmDelete = () => {
-		const updatedStateData = [...stateData];
-		updatedStateData.splice(selectedPost, 1);
-		setStateData(updatedStateData);
-		setSelectedPost(null);
+		const postIdToDelete = stateData[selectedPost].id;
+
+		axios
+			.delete(`https://jsonplaceholder.typicode.com/posts/${postIdToDelete}`)
+			.then((response) => {
+				if (response.status === 200) {
+					const updatedStateData = [...stateData];
+					updatedStateData.splice(selectedPost, 1);
+					setStateData(updatedStateData);
+				} else {
+					console.error("Error deleting post. Status:", response.status);
+				}
+			})
+			.catch((error) => {
+				console.error("Error deleting post:", error);
+			})
+			.finally(() => {
+				setSelectedPost(null);
+			});
 	};
 
 	const cancelDelete = () => {
